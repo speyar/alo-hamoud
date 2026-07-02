@@ -1,10 +1,10 @@
 import { setup } from "xstate";
-import { type GameContext } from "./types";
+import { GameEvent, type GameContext } from "./types";
 
 // machine setup for type safety
 const machineSetp = setup({
-    types: {
-        context: {} as GameContext
-        
-    }
-})
+  types: {
+    context: {} as GameContext,
+    events: {} as GameEvent,
+  },
+});
