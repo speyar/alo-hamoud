@@ -11,7 +11,22 @@ type Player = {
   connected: boolean;
 };
 
+// the player list is an array of Player objects,
+// used to store the players in the game
 type PlayerList = Array<Player>;
+
+// Game configuration type,
+// used to setup the game at the time of creation
+type GameConfig = {
+  // the maximum number of players allowed in the game
+  maxPlayers: number;
+  // the time allowed for drawing in minutes
+  drawTimeMinutes: number;
+  // the time allowed for guessing in minutes
+  guessTimeMinutes: number;
+  // the maximum number of rounds in the game
+  maxRounds: number;
+};
 
 type GameContext = {
   // the list of players in the game, stored as an array of Player objects
@@ -31,8 +46,8 @@ type GameContext = {
   // current round number (not the turn)
   // a game can have multiple rounds, each round has multiple turns
   round: number;
-  // config for max rounds, setup by the game creator
-  maxRounds: number;
+  // config setup by the game creator
+  config: GameConfig;
 };
 
 type GameEvent =
