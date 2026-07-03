@@ -57,7 +57,11 @@ type GameEvent =
   | { type: "START_GAME" }
   | { type: "END_GAME" }
   | { type: "PAUSE_GAME"; player: Player }
+  | { type: "RESUME_GAME"; player: Player }
   | { type: "DRAW_TIME_UP" }
+  | { type: "DRAWING_FINISHED" }
+  | { type: "GUESS_TIME_UP" }
+  | { type: "GUESSING_FINISHED" }
   | { type: "GUESS"; player: Player; guess: string };
 
-export type { Player, PlayerList, GameContext, GameEvent };
+export type { Player, PlayerList, GameContext, GameEvent, GameConfig };
