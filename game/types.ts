@@ -35,15 +35,14 @@ type GameContext = {
   maxRounds: number;
 };
 
-type GameEvent = 
-| { type: "PLAYER_JOINED"; player: Player }
-| { type: "PLAYER_LEFT"; playerId: string }
-| { type: "PLAYER_RECONNECTED"; playerId: string }
-| { type: "START_GAME"}
-| { type: "END_GAME"}
-| { type: "DRAW_TIME_UP"}
-| { type: "GUESS"; playerId: string; guess: string }
-
-
+type GameEvent =
+  | { type: "PLAYER_JOINED"; player: Player }
+  | { type: "PLAYER_LEFT"; player: Player }
+  | { type: "PLAYER_RECONNECTED"; player: Player }
+  | { type: "START_GAME" }
+  | { type: "END_GAME" }
+  | { type: "PAUSE_GAME"; player: Player }
+  | { type: "DRAW_TIME_UP" }
+  | { type: "GUESS"; player: Player; guess: string };
 
 export type { Player, PlayerList, GameContext, GameEvent };
