@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 
 function connect() {
-  const ws = new WebSocket(`ws://${location.host}/api/ws`);
+  const protocol = location.protocol === "https:" ? "wss" : "ws";
+  const ws = new WebSocket(`${protocol}://${location.host}/api/ws`);
   return ws;
 }
 
