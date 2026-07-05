@@ -1,35 +1,57 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
-const connect = () => {
-  const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+function connect() {
   const ws = new WebSocket(`ws://${location.host}/api/ws`);
   return ws;
-};
+}
+
+function sendMessage(message: string, ws: WebSocket) {
+  ws.send(message);
+}
 
 export default function Home() {
-  const [playersConnected, setPlayersConnected] = useState<string[]>([]);
+  const wsRef = useRef<WebSocket | null>(null);
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState<string[]>([]);
   useEffect(() => {
-    const uniqueId = crypto.randomUUID();
     const ws = connect();
-    ws.addEventListener("open", () => {
-      console.log("WebSocket connection established");
-      ws.send(uniqueId);
-    });
+    wsRef.current = ws;
     ws.addEventListener("message", async (event) => {
-      const text = await event.data.text();
-      setPlayersConnected((prev) => [...prev, text]);
+      const messagesFromServer = event.data;
+      const parsed = JSON.parse(messagesFromServer);
+      if (parsed.text) {
+        setMessages((prevMessages) => [...prevMessages, parsed.text]);
+      }
+      if (parsed.messages) {
+        setMessages(parsed.messages);
+      }
     });
-    return () => ws.close();
+    return () => {
+      ws.close();
+    };
   }, []);
   return (
-    <div>
-      <ul>
-        {playersConnected.map((id, index) => (
-          <li key={index}>{id}</li>
+    <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col gap-2 max-w-[400px]">
+        {messages.map((msg, index) => (
+          <div key={index} className="border p-2 rounded">
+            {msg}
+          </div>
         ))}
-      </ul>
+        <input
+          className="border"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+        />
+        <button
+          onClick={() => sendMessage(message, wsRef.current!)}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          Send
+        </button>
+      </div>
     </div>
   );
 }
